@@ -2,7 +2,7 @@
 
 void swap(int *x, int *y);
 void quick_sort_recursion(int *array, size_t size, int low, int high);
-size_t partition(int *array, size_t size, int low, int high);
+int partition(int *array, size_t size, int low, int high);
 
 /**
  * quick_sort - sorts an array of integers in ascending order
@@ -65,7 +65,7 @@ void quick_sort_recursion(int *array, size_t size, int low, int high)
  *
  * Return: the index of pivot
  */
-size_t partition(int *array, size_t size, int low, int high)
+int partition(int *array, size_t size, int low, int high)
 {
 	int pivot, i, j;
 
