@@ -22,12 +22,11 @@ void shell_sort(int *array, size_t size)
 	{
 		for (i = gap; i < size; i++)
 		{
-			for (j = i; j >= gap && array[j - gap] > array[j]; j -= gap)
-			{
-				tmp = array[j];
+			tmp = array[i];
+			for (j = i; j >= gap && array[j - gap] > tmp; j -= gap)
 				array[j] = array[j - gap];
-				array[j - gap] = tmp;
-			}
+
+			array[j] = tmp;
 		}
 
 		print_array(array, size);
