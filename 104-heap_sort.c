@@ -38,6 +38,7 @@ void sift_down(int *array, size_t size, size_t parent, size_t last)
 		print_array(array, size);
 
 		parent = largest_child;
+
 	} while (getLeft(parent) <= last);
 }
 
@@ -50,13 +51,13 @@ void sift_down(int *array, size_t size, size_t parent, size_t last)
  */
 void heap_sort(int *array, size_t size)
 {
-	size_t i;
+	size_t node, i;
 
 	if (array == NULL || size < 2)
 		return;
 
-	for (i = getParent(size - 1); i != SIZE_MAX; i--)
-		sift_down(array, size, i, size - 1);
+	for (node = getParent(size - 1); node != SIZE_MAX; node--)
+		sift_down(array, size, node, size - 1);
 
 	for (i = size - 1; i > 0; i--)
 	{
@@ -66,10 +67,6 @@ void heap_sort(int *array, size_t size)
 		print_array(array, size);
 		sift_down(array, size, 0, i - 1);
 	}
-
-	array[0] ^= array[1];
-	array[1] ^= array[0];
-	array[0] ^= array[1];
 
 	print_array(array, size);
 }
