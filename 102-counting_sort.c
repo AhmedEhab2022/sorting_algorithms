@@ -30,37 +30,37 @@ int get_max(int *array, int size)
  */
 void counting_sort(int *array, size_t size)
 {
-    int *count_array, *output_array, max_value, current_value;
-    size_t i;
+	int *count_array, *output_array, max_value, current_value;
+	size_t i;
 
-    if (array == NULL || size < 2)
-        return;
+	if (array == NULL || size < 2)
+		return;
 
-    max_value = get_max(array, size);
-    count_array = malloc(sizeof(int) * (max_value + 1));
-    output_array = malloc(sizeof(int) * size);
+	max_value = get_max(array, size);
+	count_array = malloc(sizeof(int) * (max_value + 1));
+	output_array = malloc(sizeof(int) * size);
 
-    for (i = 0; i <= (size_t)max_value; i++)
-        count_array[i] = 0;
+	for (i = 0; i <= (size_t)max_value; i++)
+		count_array[i] = 0;
 
-    for (i = 0; i < size; i++)
-        count_array[array[i]]++;
+	for (i = 0; i < size; i++)
+		count_array[array[i]]++;
 
-    for (i = 1; i <= (size_t)max_value; i++)
-        count_array[i] += count_array[i - 1];
+	for (i = 1; i <= (size_t)max_value; i++)
+		count_array[i] += count_array[i - 1];
 
-    print_array(count_array, max_value + 1);
+	print_array(count_array, max_value + 1);
 
-    for (i = 0; i < size; i++)
-    {
-        current_value = array[i];
-        output_array[count_array[current_value] - 1] = current_value;
-        count_array[current_value]--;
-    }
+	for (i = 0; i < size; i++)
+	{
+		current_value = array[i];
+		output_array[count_array[current_value] - 1] = current_value;
+		count_array[current_value]--;
+	}
 
-    for (i = 0; i < size; i++)
-        array[i] = output_array[i];
+	for (i = 0; i < size; i++)
+		array[i] = output_array[i];
 
-    free(output_array);
-    free(count_array);
+	free(output_array);
+	free(count_array);
 }
