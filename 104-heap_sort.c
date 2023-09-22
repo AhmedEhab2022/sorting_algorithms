@@ -16,7 +16,6 @@
 void sift_down(int *array, size_t size, size_t parent, size_t last)
 {
 	size_t largest_child, left_child, right_child;
-	int tmp;
 
 	do {
 		left_child = getLeft(parent);
@@ -32,9 +31,10 @@ void sift_down(int *array, size_t size, size_t parent, size_t last)
 		if (parent == largest_child)
 			return;
 
-		tmp = array[parent];
-		array[parent] = array[largest_child];
-		array[largest_child] = tmp;
+		array[parent] ^= array[largest_child];
+		array[largest_child] ^= array[parent];
+		array[parent] ^= array[largest_child];
+
 		print_array(array, size);
 
 		parent = largest_child;
@@ -51,7 +51,6 @@ void sift_down(int *array, size_t size, size_t parent, size_t last)
 void heap_sort(int *array, size_t size)
 {
 	size_t i;
-	int tmp;
 
 	if (array == NULL || size < 2)
 		return;
@@ -61,12 +60,16 @@ void heap_sort(int *array, size_t size)
 
 	for (i = size - 1; i > 0; i--)
 	{
-		tmp = array[0];
-		array[0] = array[i];
-		array[i] = tmp;
+		array[0] ^= array[i];
+		array[i] ^= array[0];
+		array[0] ^= array[i];
 		print_array(array, size);
-		sift_down(array, i, 0, i - 1);
+		sift_down(array, size, 0, i - 1);
 	}
+
+	array[0] ^= array[1];
+	array[1] ^= array[0];
+	array[0] ^= array[1];
 
 	print_array(array, size);
 }
