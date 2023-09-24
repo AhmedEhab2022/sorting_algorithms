@@ -6,18 +6,19 @@
  *
  * @array: The array containing the binary heap
  * @size: Number of elements in @array
+ * @base: The index of the base row of the tree.
  * @root: The index of the parent node to start from
  */
-void sift_down(int *array, size_t size, size_t root)
+void sift_down(int *array, size_t size, size_t base, size_t root)
 {
 	size_t largest = root;
 	size_t left = 2 * root + 1;
 	size_t right = 2 * root + 2;
 
-	if (left < size && array[left] > array[largest])
+	if (left < base && array[left] > array[largest])
 		largest = left;
 
-	if (right < size && array[right] > array[largest])
+	if (right < base && array[right] > array[largest])
 		largest = right;
 
 	if (largest != root)
@@ -29,7 +30,7 @@ void sift_down(int *array, size_t size, size_t root)
 
 		print_array(array, size);
 
-		sift_down(array, size, largest);
+		sift_down(array, size, base, largest);
 	}
 }
 
@@ -49,7 +50,7 @@ void heap_sort(int *array, size_t size)
 		return;
 
 	for (i = (size / 2) - 1; i >= 0; i--)
-		sift_down(array, size, i);
+		sift_down(array, size, size, i);
 
 	for (i = size - 1; i > 0; i--)
 	{
@@ -59,6 +60,6 @@ void heap_sort(int *array, size_t size)
 
 		print_array(array, size);
 
-		sift_down(array, i, 0);
+		sift_down(array, size, i, 0);
 	}
 }
