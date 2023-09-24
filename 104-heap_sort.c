@@ -1,46 +1,38 @@
 #include "sort.h"
 
-#define getParent(i) (((i) - 1) / 2)
-#define getLeft(i) (2 * (i) + 1)
-#define getRight(i) (2 * (i) + 2)
-
 /**
  * sift_down - Maintains the heap property of a binary heap
  * starting from a given index
  *
  * @array: The array containing the binary heap
  * @size: Number of elements in @array
- * @parent: The index of the parent node to start from
- * @last: The index of the last node in the heap to examine
+ * @root: The index of the parent node to start from
  */
-void sift_down(int *array, size_t size, size_t parent, size_t last)
+void sift_down(int *array, size_t size, size_t root)
 {
-	size_t largest_child, left_child, right_child;
+	size_t largest = root;
+	size_t left = 2 * root + 1;
+	size_t right = 2 * root + 2;
 
-	do {
-		left_child = getLeft(parent);
-		right_child = getRight(parent);
-		largest_child = parent;
+	if (left < size && array[left] > array[largest])
+		largest = left;
 
-		if (right_child <= last && array[right_child] > array[largest_child])
-			largest_child = right_child;
+	if (right < size && array[right] > array[largest])
+		largest = right;
 
-		if (array[left_child] > array[largest_child])
-			largest_child = left_child;
+	if (largest != root)
+	{
+		int temp = array[root];
 
-		if (parent == largest_child)
-			return;
-
-		array[parent] ^= array[largest_child];
-		array[largest_child] ^= array[parent];
-		array[parent] ^= array[largest_child];
+		array[root] = array[largest];
+		array[largest] = temp;
 
 		print_array(array, size);
 
-		parent = largest_child;
-
-	} while (getLeft(parent) <= last);
+		sift_down(array, size, largest);
+	}
 }
+
 
 /**
  * heap_sort - Sorts an array of integers in ascending order
@@ -51,22 +43,22 @@ void sift_down(int *array, size_t size, size_t parent, size_t last)
  */
 void heap_sort(int *array, size_t size)
 {
-	size_t node, i;
+	int i, tmp;
 
 	if (array == NULL || size < 2)
 		return;
 
-	for (node = getParent(size - 1); node != SIZE_MAX; node--)
-		sift_down(array, size, node, size - 1);
+	for (i = (size / 2) - 1; i >= 0; i--)
+		sift_down(array, size, i);
 
 	for (i = size - 1; i > 0; i--)
 	{
-		array[0] ^= array[i];
-		array[i] ^= array[0];
-		array[0] ^= array[i];
-		print_array(array, size);
-		sift_down(array, size, 0, i - 1);
-	}
+		tmp = array[0];
+		array[0] = array[i];
+		array[i] = tmp;
 
-	print_array(array, size);
+		print_array(array, size);
+
+		sift_down(array, i, 0);
+	}
 }
